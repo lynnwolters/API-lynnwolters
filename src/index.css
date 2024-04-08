@@ -1,9 +1,9 @@
 /* load reset css */
-@import 'reset.css';
-@import "typography.css";
+@import 'styles/reset.css';
+@import "styles/typography.css";
 
-@import '../components/poster/poster.css';
-@import "../views/detail.css";
+/* @import '../components/poster/poster.css';
+@import "../views/detail.css";  */
 
 body {
   background-color: #1a1a1a;
