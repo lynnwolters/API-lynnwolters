@@ -1,4 +1,4 @@
-# API-lynnwolters
+# API-lynnwolters-2
 
 Dit is mijn repository voor het vak Application Programming Interfaces.
 
