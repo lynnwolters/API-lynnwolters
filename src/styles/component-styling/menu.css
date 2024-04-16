@@ -1,0 +1,25 @@
+/* ***** */
+/* MENU */
+/* *** */
+
+.menu {
+    width: 100%;
+    height: 5.5em;
+
+    position: fixed;
+    bottom: 0%;
+
+    & ul {
+        height: 100%;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        background-color: var(--purple);
+
+        & li {
+            list-style: none;
+        }
+    }
+}

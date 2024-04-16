@@ -1,0 +1,23 @@
+/* ******* */
+/* BUTTON */
+/* ***** */
+
+.button {
+    padding: .75em .75em;
+
+    border-radius: var(--border-radius-1);
+}
+
+.button-light {
+    background-color: var(--white);
+
+    border: var(--border);
+
+    color: var(--purple);
+}
+
+.button-dark {
+    background-color: var(--purple);
+
+    color: var(--white);
+}

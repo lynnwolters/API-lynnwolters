@@ -1,22 +1,33 @@
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% block head %}
-    <title>My First Page</title>
-  {% endblock %}
-  {% if NODE_ENV == "development" %}
-    <script type="module" src="http://localhost:5173/@vite/client" defer></script>
-    <script type="module" src="http://localhost:5173/src/index.js" defer></script>
-  {% else %}
-    <link rel="stylesheet" href="/index.css">
-    <script src="/index.js" defer></script>
-  {% endif %}
-  {% block styles %}{% endblock %}
-  {% block scripts %}{% endblock %}
-</head>
+  
+  <head>
+      {% comment %} META {% endcomment %}
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<body>
-  {% block content %}{% endblock %}
-</body>
+      {% comment %} TITLE {% endcomment %}
+      {% block title %}
+          <title>My First Page</title>
+      {% endblock %}
+
+      {% comment %} FONTS {% endcomment %}
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"> 
+
+      {% comment %} DEV MODE {% endcomment %}
+      {% if NODE_ENV == "development" %}
+          <script type="module" src="http://localhost:5173/@vite/client" defer></script>
+          <script type="module" src="http://localhost:5173/src/index.js" defer></script>
+      {% else %}
+        <link rel="stylesheet" href="/styles.css">
+        <script src="/index.js" defer></script>
+      {% endif %}
+  </head>
+
+  <body>
+    {% comment %} CONTENT {% endcomment %}
+    {% block content %}{% endblock %}
+  </body>
+
 </html>

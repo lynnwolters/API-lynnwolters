@@ -1,0 +1,41 @@
+/* *********** */
+/* TYPOGRAPHY */
+/* ********* */
+
+.text-lg, .text-md {
+    font-family: "Playfair Display", serif;
+    font-weight: 400;
+}
+
+.text-sm, .text-xs {
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+}
+
+.text-lg {
+    font-size: 3.125em;
+    line-height: 100%;
+}
+
+.text-md {
+    font-size: 2em;
+    line-height: 110%;
+}
+
+.text-sm {
+    font-size: 1em;
+    line-height: 150%;
+}
+
+.text-xs {
+    font-size: .875em;
+    line-height: 120%;
+}
+
+.text-white {
+    color: var(--white);
+}
+
+.text-purple {
+    color: var(--purple);
+}

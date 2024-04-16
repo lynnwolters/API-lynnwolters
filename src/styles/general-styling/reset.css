@@ -1,0 +1,20 @@
+/* ****** */
+/* RESET */
+/* **** */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    height: 100dvh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

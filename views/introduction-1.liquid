@@ -1,0 +1,39 @@
+{% comment %} BASE {% endcomment %}
+{% layout "layouts/base.liquid" %}
+
+{% comment %} TITLE {% endcomment %}
+{% block title %}
+    <title>Nutrify - Introduction 1</title>
+{% endblock %}
+
+{% comment %} CONTENT {% endcomment %}
+{% block content %}
+    <body class="body-introduction" style="background-color:var(--orange);">
+        <nav class="slider outer-padding-horizontal">
+            <ul>
+                <li>
+                    <a href="/introduction-1"></a>
+                </li>
+                <li style="opacity:.4;">
+                    <a href="/introduction-2"></a>
+                </li>
+                <li style="opacity:.4;">
+                    <a href="/introduction-3"></a>
+                </li>
+            </ul>
+        </nav>
+        <header class="outer-padding-horizontal">
+            <h1 class="text-lg text-white">Gaining weight can be difficult,</h1>
+        </header>
+        <main class="main-introduction">
+            <p class="text-sm text-white outer-padding-horizontal">
+                Especially when it doesn't come naturally. <br><br>
+                Factors like a fast metabolism, mental health issues, or intense physical activity can make it even more difficult. <br><br>
+                We’re here to support you by providing daily inspiration about products, meals and drinks that are specifically designed to gain weight.
+            </p>
+            <div>
+                <img src="./images/food-illustration.svg" alt="food-illustration">
+            </div>
+        </main>
+    </body>
+{% endblock %}

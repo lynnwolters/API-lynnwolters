@@ -1,0 +1,36 @@
+/* ****** */
+/* INDEX */
+/* **** */ 
+
+.header-login {
+    height: 50%;
+
+    position: relative;
+    z-index: -1;
+
+    background-image: url('./images/women-cooking.jpg');
+    background-size: cover;
+
+    & .semi-circle {
+        position: absolute;
+        bottom: calc(0% - 1px);
+    }
+}
+
+.main-login {
+    height: 50%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    text-align: center;
+
+    & p {
+        margin: 2.5em 0;
+    }
+
+    & a {
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,21 @@
+
+/* *********** */
+/* SEARCH BAR */
+/* ********* */
+
+.search-bar {
+    & button {
+        width: 100%;
+    
+        display: flex;
+    
+        margin: 4.5em auto 2.5em auto;
+        padding: .75em .75em;
+    
+        border: var(--border);
+
+        & div {
+            margin-right: .75em;
+        }
+    }
+}

@@ -1,0 +1,40 @@
+{% comment %} BASE {% endcomment %}
+{% layout "layouts/base.liquid" %}
+
+{% comment %} TITLE {% endcomment %}
+{% block title %}
+    <title>Nutrify - Introduction 3</title>
+{% endblock %}
+
+{% comment %} CONTENT {% endcomment %}
+{% block content %}
+    <body class="body-introduction" style="background-color:var(--green);">
+        <nav class="slider outer-padding-horizontal">
+            <ul>
+                <li style="opacity:.4;">
+                    <a href="/introduction-1"></a>
+                </li>
+                <li style="opacity:.4;">
+                    <a href="/introduction-2"></a>
+                </li>
+                <li>
+                    <a href="/introduction-3"></a>
+                </li>
+            </ul>
+        </nav>
+        <header class="outer-padding-horizontal">
+            <h1 class="text-lg text-white">One last thing to keep in mind,</h1>
+        </header>
+        <main class="main-introduction">
+            <div class="outer-padding-horizontal">
+                <p class="text-sm text-white">
+                    While Nutrify offers inspiration about gaining weight, we acknowledge it does not address every aspect of it. If you have concerns about your weight, you should always contact a doctor or dietician. 
+                </p>
+                <a class="button button-light text-xs" href="/home">Go to app</a>
+            </div>
+            <div>
+                <img src="./images/food-illustration.svg" alt="food-illustration">
+            </div>
+        </main>
+    </body>
+{% endblock %}

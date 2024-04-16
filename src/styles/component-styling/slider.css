@@ -1,0 +1,29 @@
+/* ******* */
+/* SLIDER */
+/* ***** */
+
+.slider {
+    margin-top: 4.5em;
+    margin-bottom: 2em;
+
+    & ul {    
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: .75em;
+        align-items: center;
+
+        & li {
+            height: .1em;
+
+            list-style: none;
+
+            background-color: var(--white);
+
+            & a {
+                height: .1em;
+                
+                display: block;
+            }
+        }
+    }
+}

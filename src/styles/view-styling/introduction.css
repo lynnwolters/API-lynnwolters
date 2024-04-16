@@ -1,0 +1,23 @@
+/* ************* */
+/* INTRODUCTION */
+/* *********** */
+
+.body-introduction {
+    height: calc(100dvh - 4.5em);
+}
+
+.main-introduction {
+    & p, & ul {
+        margin: 2.5em 0;
+    }
+    
+    & div:last-of-type {
+        position: absolute;
+        bottom: 0%;
+
+        & img {
+            width: 100%; 
+        }
+    }
+}
+

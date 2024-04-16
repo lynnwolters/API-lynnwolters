@@ -1,0 +1,15 @@
+/* ***** */
+/* ROOT */
+/* *** */
+
+:root {
+    --orange: #FC8F0C;
+    --red: #EF5026;
+    --green: #097333;
+    --purple: #322338;
+    --white: #FFFFFF;
+    --gray: #CBCBCB;
+    --border: solid .0025em var(--gray);
+    --border-radius-1: .75em;
+    --border-radius-2: .5em;
+}

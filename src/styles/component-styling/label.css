@@ -1,0 +1,29 @@
+/* ****** */
+/* LABEL */
+/* **** */
+
+.label {
+    width: fit-content;
+
+    padding: .75em .75em;
+
+    border-radius: var(--border-radius-2);
+
+    color: var(--white);
+}
+
+.label-orange {
+    background-color: var(--orange);
+}
+
+.label-red {
+    background-color: var(--red);
+}
+
+.label-green {
+    background-color: var(--green);
+}
+
+.label-purple {
+    background-color: var(--purple);
+}

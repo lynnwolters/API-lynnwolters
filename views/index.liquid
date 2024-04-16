@@ -1,5 +1,24 @@
+{% comment %} BASE {% endcomment %}
 {% layout "layouts/base.liquid" %}
 
-{% block content %}
-<h1>Hello World!</h1>
+{% comment %} TITLE {% endcomment %}
+{% block title %}
+    <title>Nutrify</title>
 {% endblock %}
+
+{% comment %} CONTENT {% endcomment %}
+{% block content %}
+    <body style="background-color:var(--purple);">
+        <header class="header-login">
+            <svg class="semi-circle" width="390" height="41" viewBox="0 0 390 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 40.4534C62.5 10.2685 233 -33.0464 390 40.4534H0Z" fill="#322338"/>
+            </svg>
+        </header>
+        <main class="main-login">
+            <h1 class="text-lg text-white">Nutrify</h1>
+            <p class="text-sm text-white">Daily inspiration on how to gain <br> weight in a healthy manner.</p>
+            <a class="button button-light text-xs" href="/introduction-1">Go to app</a>
+        </main>
+    </body>
+{% endblock %}
+

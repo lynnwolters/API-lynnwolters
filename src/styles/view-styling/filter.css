@@ -1,0 +1,32 @@
+/* ******* */
+/* FILTER */
+/* ***** */
+
+.body-filter {
+    height: calc(100dvh - 4.5em);
+}
+
+.header-filter {
+    & > div {
+        display: flex;
+
+        margin-top: 2.5em;
+        
+        & button {
+            display: flex;
+            align-items: center;
+
+            & div {
+                margin-left: .75em;
+
+                & svg {
+                    rotate: -90deg;
+                }
+            }
+        }
+
+        & button:nth-of-type(1) {
+            margin-right: .75em;
+        }
+    }
+}
