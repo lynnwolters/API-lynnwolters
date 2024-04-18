@@ -21,3 +21,11 @@
 
     color: var(--white);
 }
+
+.button-unselected {
+    background-color: var(--purple);
+
+    border: var(--border);
+
+    color: var(--white);
+}
