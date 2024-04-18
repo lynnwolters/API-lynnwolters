@@ -9,19 +9,7 @@
 {% comment %} CONTENT {% endcomment %}
 {% block content %}
     <body class="body-introduction" style="background-color:var(--orange);">
-        <nav class="slider outer-padding-horizontal">
-            <ul>
-                <li>
-                    <a href="/introduction-1"></a>
-                </li>
-                <li style="opacity:.4;">
-                    <a href="/introduction-2"></a>
-                </li>
-                <li style="opacity:.4;">
-                    <a href="/introduction-3"></a>
-                </li>
-            </ul>
-        </nav>
+        {% render "components/slider.liquid", slug: slug %}
         <header class="outer-padding-horizontal">
             <h1 class="text-lg text-white">Gaining weight can be difficult,</h1>
         </header>

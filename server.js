@@ -33,37 +33,37 @@ app.get('/', async (req, res) => {
 
 // INTRODUCTION 1 VIEW
 app.get('/introduction-1', async (req, res) => {
-  return res.send(renderTemplate('views/introduction-1.liquid', { title: 'Introduction-1', edamamData: {} }));
+  return res.send(renderTemplate('views/introduction-1.liquid', { title: 'Introduction-1', slug: 'introduction-1', edamamData: {} }));
 });
 
 // INTRODUCTION 2 VIEW
 app.get('/introduction-2', async (req, res) => {
-  return res.send(renderTemplate('views/introduction-2.liquid', { title: 'Introduction-2', edamamData: {} }));
+  return res.send(renderTemplate('views/introduction-2.liquid', { title: 'Introduction-2', slug: 'introduction-2', edamamData: {} }));
 });
 
 // INTRODUCTION 3 VIEW
 app.get('/introduction-3', async (req, res) => {
-  return res.send(renderTemplate('views/introduction-3.liquid', { title: 'Introduction-3', edamamData: {} }));
+  return res.send(renderTemplate('views/introduction-3.liquid', { title: 'Introduction-3', slug: 'introduction-3', edamamData: {} }));
 });
 
 // HOME VIEW
 app.get('/home', async (req, res) => {
-  return res.send(renderTemplate('views/home.liquid', { title: 'Home', edamamData: {} }));
+  return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', edamamData: {} }));
 });
 
 // PRODUCT VIEW
 app.get('/detail', async (req, res) => {
-  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', edamamData: {} }));
+  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', edamamData: {} }));
 });
 
 // FILTER VIEW
 app.get('/filter', async (req, res) => {
-  return res.send(renderTemplate('views/filter.liquid', { title: 'Filter', edamamData: {} }));
+  return res.send(renderTemplate('views/filter.liquid', { title: 'Filter', slug: 'filter', edamamData: {} }));
 });
 
 // FILTER VIEW
 app.get('/saved', async (req, res) => {
-  return res.send(renderTemplate('views/saved.liquid', { title: 'Saved', edamamData: {} }));
+  return res.send(renderTemplate('views/saved.liquid', { title: 'Saved', slug: 'saved', edamamData: {} }));
 });
 
 // RENDER DATA FROM API TO LIQUID

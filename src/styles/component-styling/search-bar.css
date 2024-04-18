@@ -4,18 +4,34 @@
 /* ********* */
 
 .search-bar {
-    & button {
+    margin: 4.5em 0 2.5em 0;
+    
+    & label {
         width: 100%;
-    
-        display: flex;
-    
-        margin: 4.5em auto 2.5em auto;
-        padding: .75em .75em;
-    
-        border: var(--border);
 
-        & div {
-            margin-right: .75em;
+        position: relative;
+
+        & input {
+            width: 100%;
+
+            padding-left: 2.5em;
+
+            border: var(--border);
+
+            &::placeholder {
+                color: var(--purple);
+            }
+        }
+
+        & svg {
+            position: absolute;
+
+            top: 50%;
+            left: 0;
+
+            transform: translateY(-50%);
+
+            margin-left: .75em;
         }
     }
 }

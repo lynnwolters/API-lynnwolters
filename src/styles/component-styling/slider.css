@@ -13,16 +13,19 @@
         align-items: center;
 
         & li {
-            height: .1em;
-
             list-style: none;
-
-            background-color: var(--white);
 
             & a {
                 height: .1em;
                 
                 display: block;
+
+                background-color: var(--white);
+                opacity: .4;
+
+                &.active-slider {
+                    opacity: 1; 
+                }
             }
         }
     }

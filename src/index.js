@@ -1,2 +1,7 @@
 import './styles.css';
-import './scripts/dropdown.js';
+
+import { App } from './scripts/app.js';
+
+document.addEventListener('DOMContentLoaded', () => { 
+    const app = new App();
+});

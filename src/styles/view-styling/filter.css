@@ -54,6 +54,6 @@
     }
 }
 
-#dropdown-category.open, #dropdown-rich-in.open {
+#filter-category.open, #filter-rich-in.open {
     display: block;
 }

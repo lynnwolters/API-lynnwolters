@@ -20,6 +20,14 @@
 
         & li {
             list-style: none;
+
+            & a {
+                opacity: .4; 
+
+                &.active-menu {
+                    opacity: 1; 
+                }
+            }
         }
     }
 }
