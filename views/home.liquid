@@ -14,9 +14,9 @@
             <h1 class="text-md text-purple">Here is your daily inspiration</h1>
             <h2 class="text-sm text-purple">Goodmorning,</h2>
         </header>
-        <main class="main-home outer-padding-horizontal"">
+        <main class="main-home outer-padding-horizontal">
             <ul class="grid text-xs">
-                {% assign maxIngredients = 4 %}
+                {% assign maxIngredients = 6 %}
                 {% for ingredientItem in ingredientsData %}
                     {% if forloop.index <= maxIngredients %}
                         <li>

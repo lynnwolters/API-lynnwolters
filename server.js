@@ -42,7 +42,7 @@ app.get('/home', async (req, res) => {
   try {
     const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'egg', 'date', 'salmon', 'chicken', 'lentil', 'hummus'];
     const randomizedIngredients = ingredients.sort(() => Math.random() - 0.5);
-    const ingredientParams = randomizedIngredients.slice(0, 4).join(',');
+    const ingredientParams = randomizedIngredients.slice(0, 6).join(',');
 
     const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientParams}`)
       .then(res => res.json());
