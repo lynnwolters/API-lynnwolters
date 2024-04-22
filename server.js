@@ -39,16 +39,48 @@ app.get('/introduction-3', async (req, res) => {
 
 // HOME VIEW
 app.get('/home', async (req, res) => {
-  const foodData = await fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID}&app_key=${process.env.API_KEY}&ingr=avocado,pecan`)
-    .then(res => res.json());
-  if (foodData.parsed) {
-    foodData.parsed.forEach(foodItem => {
-      console.log(foodItem.food.label);
+  try {
+    const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'egg', 'date', 'salmon', 'chicken', 'lentil', 'hummus'];
+    const randomizedIngredients = ingredients.sort(() => Math.random() - 0.5);
+    const ingredientParams = randomizedIngredients.slice(0, 4).join(',');
+
+    const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientParams}`)
+      .then(res => res.json());
+
+    const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
+
+    if (ingredientsData.parsed) {
+      console.log(ingredientsData.parsed);
+    } else {
+      console.log('No data received from Edamam API');
+    }
+
+    const customImages = {
+      avocado: './images/avocado.jpg',
+      pecan: './images/pecan.jpg',
+      peanut_butter: './images/peanut-butter.jpg',
+      banana: './images/banana.jpg',
+      rice: './images/rice.jpg',
+      dried_fruit: './images/dried-fruit.jpg',
+      steak: './images/steak.jpg',
+      egg: './images/egg.jpg',
+      date: './images/date.jpg',
+      salmon: './images/salmon.jpg',
+      chicken: './images/chicken.jpg',
+      lentil: './images/lentil.jpg',
+      hummus: './images/hummus.jpg'
+    };
+  
+    ingredientsData.parsed.forEach(ingredientItem => {
+      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_');
+      ingredientItem.customImage = customImages[ingredientName];
     });
-  } else {
-    console.log('No data received from Edamam API');
+    
+    return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', ingredientsData: ingredientsData.parsed }));
+  } catch (error) {
+    console.error('Error fetching data from Edamam API:', error);
+    return res.status(500).send('Error fetching data from Edamam API');
   }
-  return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', foodData: {} }));
 });
 
 // PRODUCT VIEW

@@ -16,26 +16,17 @@
         </header>
         <main class="main-home outer-padding-horizontal"">
             <ul class="grid text-xs">
-                <li>
-                    <a href="/detail">
-                        <div class="label label-orange">Avocado</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail">
-                        <div class="label label-green">Banana smoothie</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail">
-                        <div class="label label-red">Lentilcurry</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/detail">
-                        <div class="label label-orange">Pecans</div>
-                    </a>
-                </li>
+                {% assign maxIngredients = 4 %}
+                {% for ingredientItem in ingredientsData %}
+                    {% if forloop.index <= maxIngredients %}
+                        <li>
+                            <a href="/detail">
+                                <div class="label label-orange">{{ ingredientItem.food.label }}</div>
+                                <img src="{{ ingredientItem.customImage }}" alt="{{ ingredientItem.food.label }}">
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
             </ul>
         </main>
         {% render "components/menu.liquid", slug: slug %}
