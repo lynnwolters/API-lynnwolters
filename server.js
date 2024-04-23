@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { App } from '@tinyhttp/app';
 import { logger } from '@tinyhttp/logger';
 import { Liquid } from 'liquidjs';
+import { urlencoded } from 'milliparsec'
 import sirv from 'sirv';
 
 // ADD LIQUID
@@ -13,6 +14,7 @@ const engine = new Liquid({
 // INITIALIZE APP
 const app = new App();
 app
+  .use(urlencoded())
   .use(logger())
   .use('/', sirv('src'))
   .listen(3000);
@@ -81,6 +83,21 @@ app.get('/home', async (req, res) => {
     console.error('Error fetching data from Edamam API:', error);
     return res.status(500).send('Error fetching data from Edamam API');
   }
+});
+
+app.post('/search', async (req, res) => {
+  console.log(req.body);
+  res.redirect('/search?q='+req.body['search-bar']);
+});
+
+// SEARCH OVERVIEW
+app.get('/search?', async (req, res) => {
+  const query = req.query.q;
+  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${query}`)
+      .then(res => res.json());
+      const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
+      console.log(ingredientsData);
+  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', foodData: {} }));
 });
 
 // PRODUCT VIEW
