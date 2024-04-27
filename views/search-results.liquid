@@ -1,0 +1,24 @@
+{% comment %} BASE {% endcomment %}
+{% layout "layouts/base.liquid" %}
+
+{% comment %} TITLE {% endcomment %}
+{% block title %}
+    <title>Nutrify</title>
+{% endblock %}
+
+{% comment %} CONTENT {% endcomment %}
+{% block content %}
+    <body style="background-color:var(--purple);">
+        <header class="header-login">
+            <svg class="semi-circle" width="390" height="41" viewBox="0 0 390 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 40.4534C62.5 10.2685 233 -33.0464 390 40.4534H0Z" fill="#322338"/>
+            </svg>
+        </header>
+        <main class="main-login">
+        {% for item in collection %}
+            
+        {% endfor %}
+        </main>
+    </body>
+{% endblock %}
+

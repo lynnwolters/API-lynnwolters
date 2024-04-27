@@ -31,9 +31,11 @@
                 </li>
             </ul>
         </nav>
-        <header class="header-detail"></header>
+        <header class="header-detail">
+            <img src="{{ image }}" alt="">
+        </header>
         <main class="main-detail outer-padding-horizontal">
-            <h1 class="text-md text-purple">Avocado</h1>
+            <h1 class="text-md text-purple">{{ foodData.food.label }}</h1>
             <div>
                 <h2 class="text-sm text-purple">Rich in:</h2>
                 <div>

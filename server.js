@@ -11,6 +11,23 @@ const engine = new Liquid({
   extname: '.liquid'
 });
 
+const customImages = {
+  avocado: './images/avocado.jpg',
+  pecan: './images/pecan.jpg',
+  peanut_butter: './images/peanut-butter.jpg',
+  banana: './images/banana.jpg',
+  rice: './images/rice.jpg',
+  dried_fruit: './images/dried-fruit.jpg',
+  steak: './images/steak.jpg',
+  egg: './images/egg.jpg',
+  date: './images/date.jpg',
+  salmon: './images/salmon.jpg',
+  chicken: './images/chicken.jpg',
+  lentil: './images/lentil.jpg',
+  hummus: './images/hummus.jpg'
+};
+
+
 // INITIALIZE APP
 const app = new App();
 app
@@ -50,32 +67,17 @@ app.get('/home', async (req, res) => {
       .then(res => res.json());
 
     const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
-
+    // console.log(ingredientsData);
     if (ingredientsData.parsed) {
       console.log(ingredientsData.parsed);
     } else {
       console.log('No data received from Edamam API');
     }
-
-    const customImages = {
-      avocado: './images/avocado.jpg',
-      pecan: './images/pecan.jpg',
-      peanut_butter: './images/peanut-butter.jpg',
-      banana: './images/banana.jpg',
-      rice: './images/rice.jpg',
-      dried_fruit: './images/dried-fruit.jpg',
-      steak: './images/steak.jpg',
-      egg: './images/egg.jpg',
-      date: './images/date.jpg',
-      salmon: './images/salmon.jpg',
-      chicken: './images/chicken.jpg',
-      lentil: './images/lentil.jpg',
-      hummus: './images/hummus.jpg'
-    };
   
     ingredientsData.parsed.forEach(ingredientItem => {
       const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_');
       ingredientItem.customImage = customImages[ingredientName];
+      ingredientItem.slug = ingredientItem.food.label.replace(' ', '-').toLowerCase();
     });
     
     return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', ingredientsData: ingredientsData.parsed }));
@@ -93,16 +95,29 @@ app.post('/search', async (req, res) => {
 // SEARCH OVERVIEW
 app.get('/search?', async (req, res) => {
   const query = req.query.q;
-  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${query}`)
+
+  const autocompleteDataPromise = fetch(`https://api.edamam.com/auto-complete?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&q=${query}`)
       .then(res => res.json());
-      const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
-      console.log(ingredientsData);
-  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', foodData: {} }));
+      let [autocompleteData] = await Promise.all([autocompleteDataPromise]);
+      autocompleteData = autocompleteData.map(data => {
+        let newData = []
+        newData.name = data
+        newData.slug = data.replace(' ', '-').toLowerCase();
+        return newData;
+      })
+      console.log(autocompleteData);
+  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', autoCompleteData: autocompleteData }));
 });
 
 // PRODUCT VIEW
-app.get('/detail', async (req, res) => {
-  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', foodData: {} }));
+app.get('/:ingredient', async (req, res) => {
+  const ingredientSlug = req.params.ingredient;
+  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientSlug}`)
+
+      .then(res => res.json());
+      const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
+      console.log(ingredientsData.parsed);
+  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', foodData: ingredientsData.parsed[0], image: customImages[ingredientSlug] }));
 });
 
 // FILTER VIEW

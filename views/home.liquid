@@ -20,7 +20,7 @@
                 {% for ingredientItem in ingredientsData %}
                     {% if forloop.index <= maxIngredients %}
                         <li>
-                            <a href="/detail">
+                            <a href="/{{ingredientItem.slug}}">
                                 <div class="label label-orange">{{ ingredientItem.food.label }}</div>
                                 <img src="{{ ingredientItem.customImage }}" alt="{{ ingredientItem.food.label }}">
                             </a>
