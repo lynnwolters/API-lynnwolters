@@ -1,12 +1,8 @@
-{% comment %} BASE {% endcomment %}
+{% comment %} INTRODUCTION 2 VIEW {% endcomment %}
 {% layout "layouts/base.liquid" %}
-
-{% comment %} TITLE {% endcomment %}
 {% block title %}
     <title>Nutrify - Introduction 2</title>
 {% endblock %}
-
-{% comment %} CONTENT {% endcomment %}
 {% block content %}
     <body class="body-introduction" style="background-color:var(--red);">
         {% render "components/slider.liquid", slug: slug %}

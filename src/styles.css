@@ -1,14 +1,12 @@
-/* ******** */
-/* IMPORTS */
-/* ****** */
+/* CSS IMPORTEREN */
 
-/* GENERAL */
+/* General styling */
 @import './styles/general-styling/reset.css';
 @import './styles/general-styling/root.css';
 @import './styles/general-styling/spacing.css';
 @import './styles/general-styling/typography.css';
 
-/* COMPONENTS */
+/* Component styling */
 @import './styles/component-styling/button.css';
 @import './styles/component-styling/slider.css';
 @import './styles/component-styling/menu.css';
@@ -16,7 +14,7 @@
 @import './styles/component-styling/grid.css';
 @import './styles/component-styling/label.css';
 
-/* VIEWS */
+/* View styling */
 @import './styles/view-styling/index.css';
 @import './styles/view-styling/introduction.css';
 @import './styles/view-styling/home.css';
