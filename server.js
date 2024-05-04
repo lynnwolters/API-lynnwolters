@@ -1,16 +1,25 @@
-// IMPORTS
-import 'dotenv/config';
-import { App } from '@tinyhttp/app';
-import { logger } from '@tinyhttp/logger';
-import { Liquid } from 'liquidjs';
-import { urlencoded } from 'milliparsec'
-import sirv from 'sirv';
+// IMPORTEREN VAN PACKAGES
+import 'dotenv/config'; // Package om api key te beschermen
+import { App } from '@tinyhttp/app'; // Gebruik maken van http requests
+import { logger } from '@tinyhttp/logger'; // Http requests / server activiteit loggen
+import { Liquid } from 'liquidjs'; // Data op een dynamische manier in html inladen
+import { urlencoded } from 'milliparsec'; // Requests beschikbaar maken voor serverlogica
+import sirv from 'sirv'; // Statische bestanden terug serveren naar de client bij een request
 
-// ADD LIQUID
-const engine = new Liquid({
-  extname: '.liquid'
+// LIQUID INITIALISEREN
+const engine = new Liquid({ 
+  extname: '.liquid' // Liquid logica gebruiken in bestanden met deze extensie naam 
 });
 
+// APP INITIALISEREN
+const app = new App();
+app
+  .use(urlencoded()) // Milliparsec initialiseren
+  .use(logger()) // Tinyhttp/logger initialiseren
+  .use('/', sirv('src')) // Sirv initialiseren + statische bestanden staan in src map
+  .listen(3000); // Server is beschikbaar op poort 3000
+
+// CUSTOM IMAGES TOEVOEGEN AAN DE PRODUCTEN VAN EDAMAM API
 const customImages = {
   avocado: './images/avocado.jpg',
   pecan: './images/pecan.jpg',
@@ -26,15 +35,6 @@ const customImages = {
   lentil: './images/lentil.jpg',
   hummus: './images/hummus.jpg'
 };
-
-
-// INITIALIZE APP
-const app = new App();
-app
-  .use(urlencoded())
-  .use(logger())
-  .use('/', sirv('src'))
-  .listen(3000);
 
 // INDEX VIEW
 app.get('/', async (req, res) => {
@@ -57,67 +57,60 @@ app.get('/introduction-3', async (req, res) => {
 });
 
 // HOME VIEW
-app.get('/home', async (req, res) => {
+app.get('/home', async (req, res) => { // Get request naar /home
   try {
-    const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'egg', 'date', 'salmon', 'chicken', 'lentil', 'hummus'];
-    const randomizedIngredients = ingredients.sort(() => Math.random() - 0.5);
-    const ingredientParams = randomizedIngredients.slice(0, 6).join(',');
-
-    const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientParams}`)
-      .then(res => res.json());
-
-    const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
-    // console.log(ingredientsData);
-    if (ingredientsData.parsed) {
-      console.log(ingredientsData.parsed);
-    } else {
-      console.log('No data received from Edamam API');
+    const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'egg', 'date', 'salmon', 'chicken', 'lentil', 'hummus']; // Lijst met ingrediënten
+    const randomizedIngredients = ingredients.sort(() => Math.random() - 0.5); // Ingrediënten sorteren op een willekeurige volgorde
+    const ingredientParams = randomizedIngredients.slice(0, 6).join(','); // Selecteer de eerste 6 ingrediënten van randomnizedIngredients
+    const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientParams}`) // Api call naar edamam api
+      .then(res => res.json()); // Data omzetten naar json format
+    const [ingredientsData] = await Promise.all([ingredientsDataPromise]); // Wacht op een antwoord vanuit edamam api en stop het daarna in de ingredienstData array
+    if (ingredientsData.parsed) { // Als de ingredientsData data bevat
+      console.log(ingredientsData.parsed); // Log dan de desbetreffende data
+    } else { // Anders
+      console.log('No data received from Edamam API'); // Geef een bericht dat het ophalen niet is gelukt
     }
-  
-    ingredientsData.parsed.forEach(ingredientItem => {
-      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_');
-      ingredientItem.customImage = customImages[ingredientName];
-      ingredientItem.slug = ingredientItem.food.label.replace(' ', '-').toLowerCase();
+    ingredientsData.parsed.forEach(ingredientItem => { // Geef parameter aan elk ingrediënt in opgehaalde ingredientsData
+      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_'); // Transformeer elk ingredientItem naar lowercase + vervang spatie door een lage streep
+      ingredientItem.customImage = customImages[ingredientName]; // Voeg customImages toe aan ingredientItems 
+      ingredientItem.slug = ingredientItem.food.label.replace(' ', '-').toLowerCase(); // Voeg url toe aan ingredientItems 
     });
-    
-    return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', ingredientsData: ingredientsData.parsed }));
-  } catch (error) {
-    console.error('Error fetching data from Edamam API:', error);
-    return res.status(500).send('Error fetching data from Edamam API');
+    return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', ingredientsData: ingredientsData.parsed })); // Geef als antwoord het gerenderde template object door aan home.liquid met de opgehaalde data
+  } catch (error) { // Als er een error is
+    console.error('Error fetching data from Edamam API:', error); // Geef dan dit error bericht mee in de console
+    return res.status(500).send('Error fetching data from Edamam API'); // Stuur dan dit error bericht mee aan de client
   }
 });
 
-app.post('/search', async (req, res) => {
-  console.log(req.body);
-  res.redirect('/search?q='+req.body['search-bar']);
+app.post('/search', async (req, res) => { // Post request in /search (search-bar)
+  console.log(req.body); // Log de post request in de console
+  res.redirect('/search?q='+req.body['search-bar']); // Tekst die in de search-bar is getypt doorsturen naar /search?q=
 });
 
 // SEARCH OVERVIEW
-app.get('/search?', async (req, res) => {
-  const query = req.query.q;
-
-  const autocompleteDataPromise = fetch(`https://api.edamam.com/auto-complete?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&q=${query}`)
-      .then(res => res.json());
-      let [autocompleteData] = await Promise.all([autocompleteDataPromise]);
-      autocompleteData = autocompleteData.map(data => {
-        let newData = []
-        newData.name = data
-        newData.slug = data.replace(' ', '-').toLowerCase();
-        return newData;
-      })
-      console.log(autocompleteData);
-  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', autoCompleteData: autocompleteData }));
+app.get('/search?', async (req, res) => { // Get request naar /search?
+  const query = req.query.q; // Pak de parameter 'q' uit de request url
+  const autocompleteDataPromise = fetch(`https://api.edamam.com/auto-complete?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&q=${query}`) // Api call naar edamam auto-complete api gebasseerd op de query
+      .then(res => res.json()); // Data omzetten naar json format
+      let [autocompleteData] = await Promise.all([autocompleteDataPromise]); // Wacht op een antwoord vanuit edamam auto-complete api en stop het daarna in de autocompleteData array
+      autocompleteData = autocompleteData.map(data => { // Maak aanpassingen op de bestaande autocompleteData array d.m.v. .map functie
+        let newData = []; // Nieuwe array voor de aanpassingen 
+        newData.name = data; // ?
+        newData.slug = data.replace(' ', '-').toLowerCase(); // Bestaande url uit autocompleteData array naar lowercase veranderen + spaties omzetten naar lage streepjes
+        return newData; // Stuur de nieuwe array met aanpassingen naar de aanpasbare autocompleteData array 
+      });
+      console.log(autocompleteData); // Log de veranderde autocompleteData naar de console
+  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', autoCompleteData: autocompleteData })); // Geef als antwoord het gerenderde template object door aan search-results.liquid met de opgehaalde data
 });
 
 // PRODUCT VIEW
-app.get('/:ingredient', async (req, res) => {
-  const ingredientSlug = req.params.ingredient;
-  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientSlug}`)
-
-      .then(res => res.json());
-      const [ingredientsData] = await Promise.all([ingredientsDataPromise]);
-      console.log(ingredientsData.parsed);
-  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', foodData: ingredientsData.parsed[0], image: customImages[ingredientSlug] }));
+app.get('/:ingredient', async (req, res) => { // Get request naar dynamische view /:ingredient
+  const ingredientSlug = req.params.ingredient; // Pak de parameter 'ingredient' uit de request url
+  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientSlug}`) // Api call naar edamam api gebasseerd op de ingredientSlug
+      .then(res => res.json()); // Data omzetten naar json format
+      const [ingredientsData] = await Promise.all([ingredientsDataPromise]); // Wacht op een antwoord vanuit edamam api en stop het daarna in de ingredientsData array
+      console.log(ingredientsData.parsed); // Log de opgehaalde ingredientsData in de console
+  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', foodData: ingredientsData.parsed[0], image: customImages[ingredientSlug] })); // Geef als antwoord het gerenderde template object door aan detail.liquid met de opgehaalde data
 });
 
 // FILTER VIEW
@@ -130,12 +123,12 @@ app.get('/saved', async (req, res) => {
   return res.send(renderTemplate('views/saved.liquid', { title: 'Saved', slug: 'saved', foodData: {} }));
 });
 
-// RENDER DATA FROM API TO LIQUID
-const renderTemplate = (template, data) => {
-  const templateData = {
-    NODE_ENV: process.env.NODE_ENV || 'production',
-    ...data
+// DATA RENDEREN VAN API NAAR LIQUID
+const renderTemplate = (template, data) => { // Template = pad naar bestand dat gerenderd moet worden, data = data dat moet worden doorgegeven aan het bestand
+  const templateData = { // Template object wordt aangemaakt
+    NODE_ENV: process.env.NODE_ENV || 'production', // Als 'process.env.NODE_ENV' het niet doet, gebruik dan 'production'
+    ...data // Stuur data mee aan template object
   };
-  return engine.renderFileSync(template, templateData);
+  return engine.renderFileSync(template, templateData); // Gerenderde template object doorgeven
 };
 
