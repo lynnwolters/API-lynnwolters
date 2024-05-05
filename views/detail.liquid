@@ -28,15 +28,34 @@
             </ul>
         </nav>
         <header class="header-detail">
-            <img src="{{ image }}" alt=" {{ ingredientsData.food.label }} ">
+            {% if image %}
+                <img src="{{ image }}" alt="{{ ingredientsData.food.label }}">
+            {% else %}
+                {% if ingredientsData.food.image %}
+                    <img src="{{ ingredientsData.food.image }}" alt="{{ ingredientsData.food.label }}">
+                {% else %}
+                    <p class="text-sm text-purple">No image available</p>
+                {% endif %}
+            {% endif %}
+            
         </header>
         <main class="main-detail outer-padding-horizontal">
             <h1 class="text-md text-purple">{{ ingredientsData.food.label }}</h1>
             <div>
                 <h2 class="text-sm text-purple">Rich in:</h2>
                 <div>
-                    <div class="label label-purple text-xs">Healthy fats</div>
-                    <div class="label label-purple text-xs">Fiber</div>
+                    {% if ingredientsData.food.nutrients.ENERC_KCAL > 200 %}
+                        <div class="label label-purple text-xs protein">Calories</div>
+                    {% endif %}
+                    {% if ingredientsData.food.nutrients.PROCNT > 10 %}
+                        <div class="label label-purple text-xs fiber">Protein</div>
+                    {% endif %}
+                    {% if ingredientsData.food.nutrients.FAT > 10 %}
+                        <div class="label label-purple text-xs calories">Healthy fats</div>
+                    {% endif %}
+                    {% if ingredientsData.food.nutrients.FIBTG > 6 %}
+                        <div class="label label-purple text-xs fats">Fiber</div>
+                    {% endif %}
                 </div>
             </div>
             <div>
@@ -48,7 +67,7 @@
                     </li>
                     <li>
                         <div>Carbohydrate</div>
-                        <div>{{ ingredientsData.food.nutrients.CHOCDF}} g</div>
+                        <div>{{ ingredientsData.food.nutrients.CHOCDF }} g</div>
                     </li>
                     <li>
                         <div>Fat unsaturaded</div>

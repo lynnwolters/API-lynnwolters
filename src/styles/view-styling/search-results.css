@@ -1,0 +1,17 @@
+/* SEARCH RESULTS VIEW */
+
+.main-search-results {
+    & h2 {
+        margin-bottom: .75em;
+    }
+
+    & ul {
+        & li {
+            margin-bottom: 1em;
+
+            list-style: none;
+
+            border-bottom: var(--border);
+        }
+    }
+}

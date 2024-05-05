@@ -69,10 +69,10 @@ app.get('/home', async (req, res) => { // Get request naar /home
     } else { // Anders
       console.log('No data received from Edamam API'); // Geef een bericht dat het ophalen niet is gelukt
     }
-    ingredientsData.parsed.forEach(ingredientItem => { // Geef parameter aan elk ingrediënt in opgehaalde ingredientsData
-      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_'); // Transformeer elk ingredientItem naar lowercase + vervang spatie / speciaal teken door een lage streep
-      ingredientItem.customImage = customImages[ingredientName]; // Voeg customImages toe aan ingredientItems 
-      ingredientItem.slug = ingredientItem.food.label.replace(' ', '-').toLowerCase(); // Voeg url toe aan ingredientItems 
+    ingredientsData.parsed.forEach(item => { // Geef parameter aan elk ingrediënt in opgehaalde ingredientsData
+      const ingredientName = item.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_'); // Transformeer elk item naar lowercase + vervang spatie / speciaal teken door een lage streep
+      item.customImage = customImages[ingredientName]; // Voeg customImages toe aan item
+      item.slug = item.food.label.replace(' ', '-').toLowerCase(); // Voeg url toe aan item
     });
     return res.send(renderTemplate('views/home.liquid', { title: 'Home', slug: 'home', ingredientsData: ingredientsData.parsed })); // Geef als antwoord het gerenderde template object door aan home.liquid met de opgehaalde data
   } catch (error) { // Als er een error is
@@ -83,24 +83,27 @@ app.get('/home', async (req, res) => { // Get request naar /home
 
 // SEARCH-BAR 
 app.post('/search', async (req, res) => { // Post request in /search (search-bar)
-  console.log(req.body); // Log de post request in de console
-  res.redirect('/search?q='+req.body['search-bar']); // Tekst die in de search-bar is getypt doorsturen naar /search?q=
+  const query = req.body['search-bar']; // Pak de tekst die in de search-bar is getypt
+  console.log('Search term:', query); // Log de tekst die in de search-bar is getypt
+  res.redirect(`/search?q=${encodeURIComponent(query)}`); // Tekst die in de search-bar is getypt doorsturen naar /search?q=
 });
 
 // SEARCH OVERVIEW
-app.get('/search?', async (req, res) => { // Get request naar /search?
+app.get('/search', async (req, res) => { // Get request naar /search?
   const query = req.query.q; // Pak de parameter 'q' uit de request url
-  const autocompleteDataPromise = fetch(`https://api.edamam.com/auto-complete?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&q=${query}`) // Api call naar edamam auto-complete api gebasseerd op de query
+  try {
+    const autocompleteDataPromise = fetch(`https://api.edamam.com/auto-complete?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&q=${query}`) // Api call naar edamam auto-complete api gebasseerd op de query
       .then(res => res.json()); // Data omzetten naar json format
-      let [autocompleteData] = await Promise.all([autocompleteDataPromise]); // Wacht op een antwoord vanuit edamam auto-complete api en stop het daarna in de autocompleteData array
-      autocompleteData = autocompleteData.map(data => { // Maak aanpassingen op de bestaande autocompleteData array d.m.v. .map functie
-        let newData = []; // Nieuwe array voor de aanpassingen 
-        newData.name = data; // ?
-        newData.slug = data.replace(' ', '-').toLowerCase(); // Bestaande url uit autocompleteData array naar lowercase veranderen + spaties omzetten naar lage streepjes
-        return newData; // Stuur de nieuwe array met aanpassingen naar de aanpasbare autocompleteData array 
-      });
-      console.log(autocompleteData); // Log de veranderde autocompleteData naar de console
-  return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', autoCompleteData: autocompleteData })); // Geef als antwoord het gerenderde template object door aan search-results.liquid met de opgehaalde data
+    const autocompleteData = await autocompleteDataPromise; // Wacht op een antwoord vanuit edamam auto-complete api en stop het daarna in de autocompleteData variable
+    const formattedAutocompleteData = autocompleteData.map(item => ({ // Maak aanpassingen op de bestaande autocompleteData variable d.m.v. .map functie
+      name: item.charAt(0).toUpperCase() + item.slice(1), // Name laten beginnen met hoofdletter
+      slug: item.replace(' ', '-').toLowerCase() // Bestaande url uit autocompleteData variable naar lowercase veranderen + spaties omzetten naar lage streepjes
+    }));
+    return res.send(renderTemplate('views/search-results.liquid', { title: 'Search Results', slug: 'search-results', autocompleteData: formattedAutocompleteData, searchTerm: query })); // Geef als antwoord het gerenderde template object door aan search-results.liquid met de opgehaalde data 
+  } catch (error) { // Als er een error is
+    console.error('Error fetching autocomplete data from Edamam API:', error); // Geef dan dit error bericht mee in de console
+    return res.status(500).send('Error fetching autocomplete data from Edamam API'); // Stuur dan dit error bericht mee aan de client
+  }
 });
 
 // FILTER VIEW

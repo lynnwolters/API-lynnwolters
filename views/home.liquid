@@ -12,11 +12,11 @@
         </header>
         <main class="main-home outer-padding-horizontal">
             <ul class="grid text-xs">
-                {% for ingredientItem in ingredientsData %}
+                {% for item in ingredientsData %}
                     <li>
-                        <a href="/{{ ingredientItem.slug }}">
-                            <div class="label label-orange">{{ ingredientItem.food.label }}</div>
-                            <img src="{{ ingredientItem.customImage }}" alt="{{ ingredientItem.food.label }}">
+                        <a href="/{{ item.slug }}">
+                            <div class="label label-orange">{{ item.food.label }}</div>
+                            <img src="{{ item.customImage }}" alt="{{ item.food.label }}">
                         </a>
                     </li>
                 {% endfor %}
