@@ -58,6 +58,14 @@
         </header>
         <main class="main-filter outer-padding-horizontal">
             <ul class="grid text-xs">
+                {% for item in ingredientsData %}
+                    <li>
+                        <a href="/{{ item.slug }}">
+                            <div class="label label-orange">{{ item.food.label }}</div>
+                            <img src="{{ item.customImage }}" alt="{{ item.food.label }}">
+                        </a>
+                    </li>
+                {% endfor %}
             </ul>
         </main>
         {% render "components/menu.liquid", slug: slug %}
