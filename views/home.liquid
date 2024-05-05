@@ -12,16 +12,13 @@
         </header>
         <main class="main-home outer-padding-horizontal">
             <ul class="grid text-xs">
-                {% assign maxIngredients = 6 %}
                 {% for ingredientItem in ingredientsData %}
-                    {% if forloop.index <= maxIngredients %}
-                        <li>
-                            <a href="/{{ingredientItem.slug}}">
-                                <div class="label label-orange">{{ ingredientItem.food.label }}</div>
-                                <img src="{{ ingredientItem.customImage }}" alt="{{ ingredientItem.food.label }}">
-                            </a>
-                        </li>
-                    {% endif %}
+                    <li>
+                        <a href="/{{ ingredientItem.slug }}">
+                            <div class="label label-orange">{{ ingredientItem.food.label }}</div>
+                            <img src="{{ ingredientItem.customImage }}" alt="{{ ingredientItem.food.label }}">
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </main>

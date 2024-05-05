@@ -28,10 +28,10 @@
             </ul>
         </nav>
         <header class="header-detail">
-            <img src="{{ image }}" alt="">
+            <img src="{{ image }}" alt=" {{ ingredientsData.food.label }} ">
         </header>
         <main class="main-detail outer-padding-horizontal">
-            <h1 class="text-md text-purple">{{ foodData.food.label }}</h1>
+            <h1 class="text-md text-purple">{{ ingredientsData.food.label }}</h1>
             <div>
                 <h2 class="text-sm text-purple">Rich in:</h2>
                 <div>
@@ -44,27 +44,51 @@
                 <ul class="text-sm text-purple">
                     <li>
                         <div>Calories</div>
-                        <div>120kcal</div>
+                        <div>{{ ingredientsData.food.nutrients.ENERC_KCAL }} kcal</div>
                     </li>
                     <li>
-                        <div>Fat</div>
-                        <div>8g</div>
+                        <div>Carbohydrate</div>
+                        <div>{{ ingredientsData.food.nutrients.CHOCDF}} g</div>
                     </li>
                     <li>
-                        <div>Protein</div>
-                        <div>6g</div>
+                        <div>Fat unsaturaded</div>
+                        <div>{{ ingredientsData.food.nutrients.FAMS }} g</div>
+                    </li>
+                    <li>
+                        <div>Fat saturated</div>
+                        <div>{{ ingredientsData.food.nutrients.FASAT }} g</div>
+                    </li>
+                    <li>
+                        <div>Total fat</div>
+                        <div>{{ ingredientsData.food.nutrients.FAT }} g</div>
                     </li>
                     <li>
                         <div>Sugar</div>
-                        <div>1g</div>
+                        <div>{{ ingredientsData.food.nutrients.SUGAR }} g</div>
+                    </li>
+                    <li>
+                        <div>Added sugar</div>
+                        <div>{{ ingredientsData.food.nutrients.SUGAR.added }} g</div>
+                    </li>
+                    <li>
+                        <div>Protein</div>
+                        <div>{{ ingredientsData.food.nutrients.PROCNT }} g</div>
                     </li>
                     <li>
                         <div>Fiber</div>
-                        <div>7g</div>
+                        <div>{{ ingredientsData.food.nutrients.FIBTG }} g</div>
                     </li>
                     <li>
-                        <div>Vitamins</div>
-                        <div>B, C</div>
+                        <div>Vitamin B12</div>
+                        <div>{{ ingredientsData.food.nutrients.VITB12 }} µg</div>
+                    </li>
+                    <li>
+                        <div>Vitamin C</div>
+                        <div>{{ ingredientsData.food.nutrients.VITC }} mg</div>
+                    </li>
+                    <li>
+                        <div>Vitamin D</div>
+                        <div>{{ ingredientsData.food.nutrients.VITD }} µg</div>
                     </li>
                 </ul>
             </div>

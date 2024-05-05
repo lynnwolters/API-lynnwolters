@@ -28,7 +28,6 @@ const customImages = {
   rice: './images/rice.jpg',
   dried_fruit: './images/dried-fruit.jpg',
   steak: './images/steak.jpg',
-  egg: './images/egg.jpg',
   date: './images/date.jpg',
   salmon: './images/salmon.jpg',
   chicken: './images/chicken.jpg',
@@ -59,19 +58,19 @@ app.get('/introduction-3', async (req, res) => {
 // HOME VIEW
 app.get('/home', async (req, res) => { // Get request naar /home
   try {
-    const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'egg', 'date', 'salmon', 'chicken', 'lentil', 'hummus']; // Lijst met ingrediënten
+    const ingredients = ['avocado', 'pecan', 'peanut~butter', 'banana', 'rice', 'dried~fruit', 'steak', 'date', 'salmon', 'chicken', 'lentil', 'hummus']; // Lijst met ingrediënten
     const randomizedIngredients = ingredients.sort(() => Math.random() - 0.5); // Ingrediënten sorteren op een willekeurige volgorde
     const ingredientParams = randomizedIngredients.slice(0, 6).join(','); // Selecteer de eerste 6 ingrediënten van randomnizedIngredients
     const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientParams}`) // Api call naar edamam api
       .then(res => res.json()); // Data omzetten naar json format
     const [ingredientsData] = await Promise.all([ingredientsDataPromise]); // Wacht op een antwoord vanuit edamam api en stop het daarna in de ingredienstData array
     if (ingredientsData.parsed) { // Als de ingredientsData data bevat
-      console.log(ingredientsData.parsed); // Log dan de desbetreffende data
+      console.log('Ingredients Data Home:', ingredientsData.parsed); // Log dan de desbetreffende data
     } else { // Anders
       console.log('No data received from Edamam API'); // Geef een bericht dat het ophalen niet is gelukt
     }
     ingredientsData.parsed.forEach(ingredientItem => { // Geef parameter aan elk ingrediënt in opgehaalde ingredientsData
-      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_'); // Transformeer elk ingredientItem naar lowercase + vervang spatie door een lage streep
+      const ingredientName = ingredientItem.food.label.toLowerCase().replace(/ /g, '_').replace(/~/g, '_'); // Transformeer elk ingredientItem naar lowercase + vervang spatie / speciaal teken door een lage streep
       ingredientItem.customImage = customImages[ingredientName]; // Voeg customImages toe aan ingredientItems 
       ingredientItem.slug = ingredientItem.food.label.replace(' ', '-').toLowerCase(); // Voeg url toe aan ingredientItems 
     });
@@ -82,6 +81,7 @@ app.get('/home', async (req, res) => { // Get request naar /home
   }
 });
 
+// SEARCH-BAR 
 app.post('/search', async (req, res) => { // Post request in /search (search-bar)
   console.log(req.body); // Log de post request in de console
   res.redirect('/search?q='+req.body['search-bar']); // Tekst die in de search-bar is getypt doorsturen naar /search?q=
@@ -103,24 +103,24 @@ app.get('/search?', async (req, res) => { // Get request naar /search?
   return res.send(renderTemplate('views/search-results.liquid', { title: 'Detail', slug: 'detail', autoCompleteData: autocompleteData })); // Geef als antwoord het gerenderde template object door aan search-results.liquid met de opgehaalde data
 });
 
-// PRODUCT VIEW
-app.get('/:ingredient', async (req, res) => { // Get request naar dynamische view /:ingredient
-  const ingredientSlug = req.params.ingredient; // Pak de parameter 'ingredient' uit de request url
-  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientSlug}`) // Api call naar edamam api gebasseerd op de ingredientSlug
-      .then(res => res.json()); // Data omzetten naar json format
-      const [ingredientsData] = await Promise.all([ingredientsDataPromise]); // Wacht op een antwoord vanuit edamam api en stop het daarna in de ingredientsData array
-      console.log(ingredientsData.parsed); // Log de opgehaalde ingredientsData in de console
-  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', foodData: ingredientsData.parsed[0], image: customImages[ingredientSlug] })); // Geef als antwoord het gerenderde template object door aan detail.liquid met de opgehaalde data
-});
-
 // FILTER VIEW
 app.get('/filter', async (req, res) => {
   return res.send(renderTemplate('views/filter.liquid', { title: 'Filter', slug: 'filter', foodData: {} }));
 });
 
-// FILTER VIEW
+// SAVED VIEW
 app.get('/saved', async (req, res) => {
   return res.send(renderTemplate('views/saved.liquid', { title: 'Saved', slug: 'saved', foodData: {} }));
+});
+
+// DETAIL VIEW
+app.get('/:ingredient', async (req, res) => { // Get request naar dynamische view /:ingredient
+  let ingredientSlug = req.params.ingredient; // Pak de parameter 'ingredient' uit de request url
+  const ingredientsDataPromise = fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=${process.env.API_ID_FOOD}&app_key=${process.env.API_KEY_FOOD}&ingr=${ingredientSlug}`) // Api call naar edamam api gebasseerd op de ingredientSlug
+      .then(res => res.json()); // Data omzetten naar json format
+      const [ingredientsData] = await Promise.all([ingredientsDataPromise]); // Wacht op een antwoord vanuit edamam api en stop het daarna in de ingredientsData array
+      console.log('Ingredients Data Detail:', ingredientsData.parsed); // Log de opgehaalde ingredientsData in de console
+  return res.send(renderTemplate('views/detail.liquid', { title: 'Detail', slug: 'detail', ingredientsData: ingredientsData.parsed[0], image: customImages[ingredientSlug] })); // Geef als antwoord het gerenderde template object door aan detail.liquid met de opgehaalde data
 });
 
 // DATA RENDEREN VAN API NAAR LIQUID
