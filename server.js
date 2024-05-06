@@ -18,7 +18,7 @@ app
   .use(logger()) // Tinyhttp/logger initialiseren
   .listen(3000); // Server is beschikbaar op poort 3000
   if (process.NODE_ENV === 'production') { // Als environment production is
-    app.use(sirv('/', 'dist/assets')); // Serveer dan vanuit dist/assets
+    app.use('/', sirv('dist/assets')); // Serveer dan vanuit dist/assets
   } else {
     app.use('/', sirv('src')); // Anders vanuit src
   }
