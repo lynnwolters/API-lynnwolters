@@ -17,12 +17,10 @@ app
   .use(urlencoded()) // Milliparsec initialiseren
   .use(logger()) // Tinyhttp/logger initialiseren
   .listen(3000); // Server is beschikbaar op poort 3000
-
-  app.use(sirv('/images', 'src/images'));
-  if (process.NODE_ENV === 'production') {
-    app.use(sirv('/', 'dist/assets'));
+  if (process.NODE_ENV === 'production') { // Als environment production is
+    app.use(sirv('/', 'dist/assets')); // Serveer dan vanuit dist/assets
   } else {
-    app.use('/', sirv('src')); // Sirv initialiseren + statische bestanden staan in src map
+    app.use('/', sirv('src')); // Anders vanuit src
   }
 
 // CUSTOM IMAGES TOEVOEGEN AAN DE PRODUCTEN VAN EDAMAM API
