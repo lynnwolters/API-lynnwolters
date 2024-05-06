@@ -16,8 +16,14 @@ const app = new App();
 app
   .use(urlencoded()) // Milliparsec initialiseren
   .use(logger()) // Tinyhttp/logger initialiseren
-  .use('/', sirv('src')) // Sirv initialiseren + statische bestanden staan in src map
   .listen(3000); // Server is beschikbaar op poort 3000
+
+  app.use(sirv('/images', 'src/images'));
+  if (process.NODE_ENV === 'production') {
+    app.use(sirv('/', 'dist/assets'));
+  } else {
+    app.use('/', sirv('src')); // Sirv initialiseren + statische bestanden staan in src map
+  }
 
 // CUSTOM IMAGES TOEVOEGEN AAN DE PRODUCTEN VAN EDAMAM API
 const customImages = {
